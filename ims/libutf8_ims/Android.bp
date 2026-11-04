@@ -1,0 +1,7 @@
+cc_library_shared {
+    name: "libutf8_ims",
+    srcs: ["utf8_length.cpp"],
+    cflags: ["-Wall", "-Werror", "-O2"],
+    compile_multilib: "64",   // the imsservice engine process is 64-bit
+    // only needs libc; keep it dependency-free so it loads in the app namespace
+}

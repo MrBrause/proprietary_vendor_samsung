@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Static RRO targeting framework-res (package "android"). isStatic=true is required
+  because these config_* bools are not exposed via <overlayable> for arbitrary RROs;
+  static also makes it always-on, applied before telephony reads the flags at boot.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.herolte.overlay.volte">
+
+    <application android:hasCode="false" />
+
+    <overlay
+        android:targetPackage="android"
+        android:isStatic="true"
+        android:priority="9999" />
+</manifest>

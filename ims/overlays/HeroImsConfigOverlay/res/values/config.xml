@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Device default MMTEL ImsService: our AOSP-API bridge to the Samsung engine.
+         config_ims_rcs_package is deliberately left unset - HeroImsBridge only
+         implements MMTEL (+ EMERGENCY_MMTEL), not RCS. -->
+    <string name="config_ims_mmtel_package" translatable="false">org.lineageos.heroimsbridge</string>
+</resources>

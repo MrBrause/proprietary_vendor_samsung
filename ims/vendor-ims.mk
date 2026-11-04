@@ -90,4 +90,5 @@ PRODUCT_COPY_FILES += \
     vendor/samsung/ims/proprietary/system/lib64/vendor.samsung.hardware.radio.bridge@2.1.so:$(TARGET_COPY_OUT_SYSTEM)/lib64/vendor.samsung.hardware.radio.bridge@2.1.so
 
 PRODUCT_PACKAGES += \
-    imsservice
+    imsservice \
+    libutf8_ims

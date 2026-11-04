@@ -1,0 +1,11 @@
+// Static RRO over framework-res (android) to make the VoLTE ("4G Calling") toggle
+// available on all carriers, independent of any carrier_config asset. AOSP defaults
+// config_device_volte_available and config_carrier_volte_available to false, which
+// hard-disables VoLTE at the platform level and hides the Enhanced4GLte toggle.
+// Keeping the toggle visible regardless of current IMS registration is what makes the
+// reboot hard-disable reversible from the UI (turn back ON -> reboot -> VoLTE).
+runtime_resource_overlay {
+    name: "HeroVolteAvailableOverlay",
+    product_specific: true,
+    sdk_version: "current",
+}

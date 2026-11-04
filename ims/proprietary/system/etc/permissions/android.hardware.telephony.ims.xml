@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Declares FEATURE_TELEPHONY_IMS so AOSP PhoneFactory stops logging
+  "IMS is not supported on this device, skipping ImsResolver" and actually
+  creates ImsResolver (the component that binds an ImsService/MmTelFeature).
+  Install: /system/etc/permissions/android.hardware.telephony.ims.xml  (0644)
+  Reversible: delete the file + reboot to go back.
+  NOTE: this only makes AOSP *look* for an ImsService. Until a bound ImsService
+  (the HeroImsBridge, Layer 2) exists, ImsResolver will come up but bind nothing.
+-->
+<permissions>
+    <feature name="android.hardware.telephony.ims" />
+</permissions>

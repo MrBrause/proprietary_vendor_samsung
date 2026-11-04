@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- VoLTE available on this device. -->
+    <bool name="config_device_volte_available">true</bool>
+    <!-- VoLTE not hard-disabled for the carrier; availability then follows provisioning
+         (which the Samsung engine + CSC drive). Makes the toggle carrier-agnostic. -->
+    <bool name="config_carrier_volte_available">true</bool>
+    <!-- VT (video) and WFC (VoWiFi) intentionally left at AOSP default false:
+         not implemented yet. Enable when those milestones land. -->
+</resources>

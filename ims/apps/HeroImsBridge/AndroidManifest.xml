@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  HeroImsBridge — an AOSP-API ImsService that relays to Samsung's com.sec.imsservice.
+  Makes AOSP telephony (ImsResolver/ImsPhoneCallTracker/Telecom) see IMS registration
+  and incoming/outgoing VoLTE calls, so the dialer rings and routes over IMS.
+
+  Build as a PRIVILEGED, PLATFORM-SIGNED system app (needs the ImsService bind
+  signature permission + privileged telephony perms). Install to /system/priv-app/.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.heroimsbridge"
+    android:sharedUserId="android.uid.system">
+    <!-- same uid as com.sec.imsservice (system) so we can bind its private VolteService2
+         and call its binders; this is how Samsung's own IMS clients run. -->
+
+    <uses-sdk android:minSdkVersion="34" android:targetSdkVersion="34" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PERFORM_IMS_SINGLE_REGISTRATION" />
+    <!-- to talk to the Samsung engine's providers/binders -->
+    <uses-permission android:name="com.sec.imsservice.permission.READ_IMS" />
+
+    <application
+        android:label="HeroImsBridge"
+        android:directBootAware="true"
+        android:persistent="true">
+
+        <!-- Samsung IMS AIDL (com.sec.ims.*, volte2.*) is provided by the device's imsmanager
+             shared library. Loading it here guarantees the Binder contract matches the engine.
+             (Drop this line if you switch Android.bp to static_libs bundling.) -->
+        <uses-library android:name="imsmanager" android:required="false" />
+
+        <!--
+          AOSP ImsResolver binds this because the device framework overlay points
+          config_ims_mmtel_package (and config_ims_rcs_package) at this package.
+          The BIND_IMS_SERVICE signature permission restricts the binder to the system.
+        -->
+        <service
+            android:name=".HeroImsService"
+            android:exported="true"
+            android:directBootAware="true"
+            android:permission="android.permission.BIND_IMS_SERVICE">
+            <intent-filter>
+                <action android:name="android.telephony.ims.ImsService" />
+            </intent-filter>
+            <!-- advertise the features we implement; MMTEL (+ EMERGENCY_MMTEL later) -->
+            <meta-data android:name="android.telephony.ims.MMTEL_FEATURE" android:value="true" />
+            <meta-data android:name="android.telephony.ims.RCS_FEATURE" android:value="false" />
+        </service>
+    </application>
+</manifest>

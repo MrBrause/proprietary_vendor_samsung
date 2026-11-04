@@ -13,5 +13,5 @@ service multiclient-daemon1 /system/bin/multiclientd -c 2
 on property:ril.halservice.registered.slot1=true
    start multiclient-daemon
 
-on property:ril.halservice.registered.slot2=true
-   start multiclient-daemon1
+#on property:ril.halservice.registered.slot2=true
+#   start multiclient-daemon1

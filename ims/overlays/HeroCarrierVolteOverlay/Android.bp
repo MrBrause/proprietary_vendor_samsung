@@ -1,0 +1,13 @@
+// Static RRO over com.android.carrierconfig: overrides R.xml.vendor, which
+// DefaultCarrierConfigService appends to EVERY carrier's config. Sets
+// carrier_volte_available_bool=true (KEY_CARRIER_VOLTE_AVAILABLE_BOOL) for all
+// carriers, which isVolteEnabledByPlatform() requires (together with the framework-res
+// config_device_volte_available from HeroVolteAvailableOverlay) before Settings shows
+// the "4G Calls" toggle. Carrier-agnostic: no per-carrier/MCCMNC file.
+// --keep-raw-values keeps the carrier-config XML values intact for runtime parsing.
+runtime_resource_overlay {
+    name: "HeroCarrierVolteOverlay",
+    product_specific: true,
+    aaptflags: ["--keep-raw-values"],
+    sdk_version: "current",
+}

@@ -1,0 +1,46 @@
+// HeroImsBridge — AOSP ImsService shim that relays to Samsung's com.sec.imsservice engine.
+// Drop this whole dir at packages/apps/HeroImsBridge/ and add HeroImsBridge to PRODUCT_PACKAGES (herolte).
+//
+// The Samsung IMS AIDL (com.sec.ims.*, com.sec.ims.volte2.*, .data.*) lives in the device's
+// `imsmanager` shared library (the engine declares <uses-library android:name="imsmanager">).
+// prebuilt/imsmanager-classes.jar here is that same jar converted to .class form, for COMPILE ONLY.
+// At runtime the app loads the real imsmanager via <uses-library> (see AndroidManifest.xml), so the
+// Binder transaction codes + Parcelable layouts match the live engine by construction.
+
+java_import {
+    name: "heroims-imsmanager-compat",
+    jars: ["prebuilt/imsmanager-classes.jar"],
+    sdk_version: "current",
+}
+
+android_app {
+    name: "HeroImsBridge",
+    srcs: ["src/**/*.java"],
+    manifest: "AndroidManifest.xml",
+
+    platform_apis: true,      // ImsService/MmTelFeature/ImsCallSessionImplBase are @SystemApi
+    certificate: "platform",  // needs BIND_IMS_SERVICE signature perm + android.uid.system
+    privileged: true,         // installs to /system/priv-app
+
+    // COMPILE-time only (provided, NOT bundled). Runtime classes come from the device's imsmanager
+    // shared library via <uses-library> -> one true copy, no cross-process class-identity skew.
+    libs: ["heroims-imsmanager-compat"],
+
+    // imsmanager is a runtime shared library this app needs on its classpath. It is NOT a build
+    // module (it's a prebuilt pushed with the engine), so declare it as optional so Soong's
+    // dexpreopt class-loader-context check does not fail the build on an unknown library.
+    optional_uses_libs: ["imsmanager"],
+
+    optimize: { enabled: false },
+    dex_preopt: { enabled: false },  // avoid dexpreopt CLC issues with the out-of-tree shared lib
+}
+
+// ---------------------------------------------------------------------------------------------
+// ALTERNATIVE if the `libs` + <uses-library> route gives you grief (e.g. dexpreopt/CLC errors or
+// the imsmanager shared-lib registration isn't present at scan time): bundle the AIDL instead.
+// Swap the two lines in android_app:
+//     libs: ["heroims-imsmanager-compat"],   ->   static_libs: ["heroims-imsmanager-compat"],
+// and DROP optional_uses_libs + the <uses-library> line in AndroidManifest.xml. The bundled
+// Stub/Proxy carry the same interface descriptors + transaction codes, so cross-process Binder to
+// the engine still matches; the app just carries its own copy of the com.sec.ims.* classes.
+// ---------------------------------------------------------------------------------------------

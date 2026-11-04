@@ -1,0 +1,9 @@
+// Static RRO that points the device MMTEL ImsService at HeroImsBridge.
+// Needed because config_ims_mmtel_package (packages/services/Telephony) has no
+// <overlayable> entry, so only a STATIC overlay can override it; and a static
+// RRO applies reliably at boot regardless of DEVICE_PACKAGE_OVERLAYS merge quirks.
+runtime_resource_overlay {
+    name: "HeroImsConfigOverlay",
+    product_specific: true,
+    sdk_version: "current",
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Privileged-permission allowlist for HeroImsBridge. Install to:
+    /system/etc/permissions/privapp-permissions-org.lineageos.heroimsbridge.xml
+  (or system_ext/etc/permissions). Required because HeroImsBridge is a /system/priv-app that
+  requests signature|privileged telephony permissions. Without this entry the app is denied the
+  privileged perms at scan and ImsResolver's bind / registration mirroring will not work.
+-->
+<permissions>
+    <privapp-permissions package="org.lineageos.heroimsbridge">
+        <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+        <permission name="android.permission.MODIFY_PHONE_STATE" />
+        <permission name="android.permission.PERFORM_IMS_SINGLE_REGISTRATION" />
+    </privapp-permissions>
+</permissions>

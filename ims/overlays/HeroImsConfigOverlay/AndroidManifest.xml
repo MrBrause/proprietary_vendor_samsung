@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Static RRO targeting com.android.phone (packages/services/Telephony), which reads
+  config_ims_mmtel_package ONCE at PhoneGlobals startup to pick the device MMTEL
+  ImsService. isStatic=true is required because that resource is not <overlayable>;
+  it also makes the overlay always-on and immutable, applied before PhoneGlobals runs.
+  High priority so it wins over any other overlay on com.android.phone.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.herolte.overlay.ims">
+
+    <application android:hasCode="false" />
+
+    <overlay
+        android:targetPackage="com.android.phone"
+        android:isStatic="true"
+        android:priority="9999" />
+</manifest>

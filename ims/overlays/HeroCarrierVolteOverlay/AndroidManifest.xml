@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Static RRO targeting com.android.carrierconfig. Overrides its res/xml/vendor.xml
+  (R.xml.vendor), the "applies to every carrier" default bundle. isStatic=true =
+  always-on, applied before CarrierConfig loads.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.lineageos.herolte.overlay.carrierconfig">
+
+    <application android:hasCode="false" />
+
+    <overlay
+        android:targetPackage="com.android.carrierconfig"
+        android:isStatic="true"
+        android:priority="9999" />
+</manifest>
