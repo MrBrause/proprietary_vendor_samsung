@@ -3,8 +3,8 @@
     "update_method": "update",
     "profile": [
       {
-        "name": "Open TMobile Germany IMS",
-        "mnoname": "TMobile_DE",
+        "name": "default",
+        "mnoname": "DEFAULT",
         "enable_evs_codec": false,
         "amrwb_mode": "0,1,2",
         "amrwboa_payload": 104,
